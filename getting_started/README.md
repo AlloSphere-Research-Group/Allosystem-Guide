@@ -16,14 +16,16 @@ For more information and to download git, visit the [Git homepage](http://git-sc
 
 
 ##Installation
-You don’t need to install AlloSystem, as it can be used without installing, with the application building facilities provided by the AlloSystem build system (see section *Application building facilities* below). If you choose to install the AlloSystem libraries, then they will be available as any other system libraries and you will need to use AlloProject or build your own IDE projects (see sections on *AlloProject* and *IDEs* below). You will also need to get some of the dependencies described below in the *Dependencies* section.
+You might not need to install AlloSystem, as it can be used directly from the sources without installing. The AlloSystem build system provides application building facilities (see section *Application building facilities* below). If you choose to install the AlloSystem libraries, then they will be available as any other system libraries and you will need to use AlloProject or build your own IDE projects (see sections on *AlloProject* and *IDEs* below). To decide whether you want to install or use the application building facilities in AlloSystem, read the rest of the chapter.
+
+You will also need to get some of the dependencies described below in the *Dependencies* section.
 
 ###OS X
 1. Homebrew: You can get AlloSystem and its dependencies using the [homebrew package manager](http://brew.sh). There is no need to download the sources from git if you use this
 method. To install using homebrew run on the terminal:
 
 
-    $ brew tap AlloSphere - Research - Group / AlloSystem
+    $ brew tap AlloSphere-Research-Group/AlloSystem
     $ brew install AlloSystem
 
 2. Command line: You can install the libraries by running in the AlloSystem
@@ -111,8 +113,7 @@ If you need to run your application in the debugger, you can run it like:
     ./debug.sh path/to/file.cpp
 
 This will build debug version of the AlloSystem libraries and of the application, and will run it in the debugger. If the application crashes or is interrupted, the debugger shell will open allowing for inspecting memory and
-setting breakpoints. If you need to use a different debugger to the default gdb, edit the debug.sh
-script’s variable DEBUGGER.
+setting breakpoints. If you need to use a different debugger to the default gdb, edit the *debug.sh* script's variable *DEBUGGER*.
 
 ##AlloProject
 The AlloProject repository contains a set of scripts that simplifies getting AlloSystem, GLV and Gamma and building applications that use them. You should use AlloProject if:
