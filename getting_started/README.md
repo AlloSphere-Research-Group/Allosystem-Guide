@@ -57,10 +57,11 @@ To build AlloSystem you will first need the cmake build system. You can download
 Different parts of AlloSystem have different dependencies:
 * Allocore:
  * *Mandatory dependencies*:
+   * Pthreads, LibUSB and Udev on Linux system (no mandatory dependencies on other systems)
+ * *Optional dependencies*:
    * OpenGL
    * GLUT
    * GLEW
- * *Optional dependencies*:
    * Freetype
    * Assimp
    * Freeimage
@@ -74,7 +75,7 @@ Different parts of AlloSystem have different dependencies:
  * Allocore
  * GLV
 
-The smallest and simplest AlloSystem can consist of Allocore without any optional dependencies. This system will allow you to create interactive applications, but will lack a lot of functionality like font rendering, audio, stereographic rendering and GL control widgets.
+The smallest and simplest AlloSystem can consist of the Allocore library only without any optional dependencies. This system could allow you to create interactive applications, but will lack a some of functionality like font rendering, audio, stereographic rendering or GL control widgets.
 
 If you build Allocore without having all the dependencies, be aware that the library will build without issues, but if you try to build code that uses the functions that are not available, you will encounter "undefined symbol" errors when linking to Allocore.
 
