@@ -195,6 +195,8 @@ Voilà! Now the sphere appears to have volume.
 // - show adjusting audio buffer size with initAudio
 //
 
+The first thing you need to do if you want audio in your application, is call the *initAudio()* function of AlloApp within the contructor:
+
     struct AlloApp : App {
       Light light;
       Mesh m;
@@ -207,6 +209,8 @@ Voilà! Now the sphere appears to have volume.
       }
       ...
 
+Then you need to define what audio will go out. This is done by reimplementing the *onSound()* function:
+
       virtual void onSound(AudioIOData& io) {
         // this will make a pulse wave with a frequency of 44100 / 128 Hz
         io();
@@ -215,57 +219,42 @@ Voilà! Now the sphere appears to have volume.
           io.out(0) = io.out(1) = 0.0f;
         }
       }
-
     };
 
+Notice that this function takes a reference to an *AudioIOData* object. This object holds the input and output buffers as well as other useful information about the audio process. You can access the buffers for each channel by passing an index to the *out()* and *in()* functions of the *AudioIOData* object.
 
 ###Interactive sound
 
-trigger one impulse per key press (via bool flag because threads)
+To create interactive applications, you want to bring in control data, from an input device, like the keyboard, the mouse, a MIDI device, etc. and send it to the audio processing function. To share the information, the simplest way is to create a class variable that will pass the information between these two separate processes.
 
-// - introduce the type: bool
-// - explain the concept of a flag
-// - lookup onKeyDown, ViewpointWindow, and Keyboard in the doxygen
-// - breifly mention threading. we'll return to it later
-//
-
-    #include "allocore/io/al_App.hpp"
-    using namespace al;
     struct AlloApp : App {
-
       bool shouldClick;
       Light light;
       Mesh m;
 
       AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.generateNormals();
-        initWindow();
-        initAudio();
-
+        ...
         shouldClick = true;
       }
 
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        g.draw(m);
+Whenever a key is pressed, the AlloSystem App will call its virtual function *onKeyDown()*, so if you want to process keyboard events yourself, all you have to do is reimplement the function. In this case, we will check whether a spacebar has been pressed and we set the member variable *shouldClick* to true.
+
+      virtual void onKeyDown(const ViewpointWindow& vw, const Keyboard& k) {
+        if (k.key() == ' ') {
+          std::cout << "Spacebar pressed" << std::endl;
+          shouldClick = true;
+        }
       }
 
+Then we create a function that produces a single click whenever the spacebar has been pressed:
+
       virtual void onSound(AudioIOData& io) {
-
         while ( io() ) {
-
           if (shouldClick) {
             shouldClick = false;
-
             float s = 1.0f;
             io.out(0) = s;
             io.out(1) = s;
-
           }
           else {
             float s = 0.0f;
@@ -275,103 +264,9 @@ trigger one impulse per key press (via bool flag because threads)
         }
       }
 
-      virtual void onKeyDown(const ViewpointWindow& vw, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-          shouldClick = true;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
+###Drawing more spheres
 
-###Play a sine wave
-(using a gam::sine<> unit generator)
-
-// - show Gamma doxygen on Sine
-// - explain "gam::Sync::master().spu(audioIO().fps());"
-// - use vocabulary: templates, generator, frequency, phase, samplerate
-//
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-
-      gam::Sine<> sine;
-
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.generateNormals();
-
-        sine.freq(1400.0);
-
-        initWindow();
-        initAudio();
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        g.draw(m);
-      }
-
-      virtual void onSound(AudioIOData& io) {
-
-        // tell gamma's oscillators what the sample rate is
-        gam::Sync::master().spu(audioIO().fps());
-
-        while (io()) {
-          float s = sine();
-          io.out(0) = s;
-          io.out(1) = s;
-        }
-
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-
-
-###Draw two spheres
-(the same mesh translated)
-
-// - show doxygen on Graphics
-// - explain pushMatrix(), popMatrix(), and translate()
-//
-
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-      gam::Sine<> sine;
-
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.generateNormals();
-
-        sine.freq(440.0);
-
-        initWindow();
-        initAudio();
-      }
+You can use a single mesh to draw multiple times on a Graphics object. To be useful you can perform a translation prior to drawing. This will draw two separate spheres:
 
       virtual void onDraw(Graphics& g, const Viewpoint& v) {
         light();
@@ -381,182 +276,20 @@ trigger one impulse per key press (via bool flag because threads)
         g.draw(m);
       }
 
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-        while (io())
-          io.out(0) = io.out(1) = sine();
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
 
-
-
-###Play two sines
-(each has its own phase so you need two instances of the unit generator)
-
-// - does this scale?
-// - how do we make lots of spheres and sines?
-//
-
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-
-      gam::Sine<> sine, sine2;
-
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.generateNormals();
-
-        sine.freq(440.0);
-        sine2.freq(770.0);
-
-        initWindow();
-        initAudio();
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        g.draw(m);
-
-        g.translate(2, 1, 0);
-        g.draw(m);
-      }
-      virtual void onSound(AudioIOData& io) {
-
-        gam::Sync::master().spu(audioIO().fps());
-
-        while (io()) {
-          io.out(0) = sine(); // left
-          io.out(1) = sine2(); // right
-          //io.out(0) = io.out(1) = 0.5f * sine() + 0.5f * sine2();
-          //io.out(0) = io.out(1) = (sine() + sine2()) * 0.5f;
-        }
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-
-
-###Play 20 sines
-
-(an array of ugens, for loop to set frequencies)
-
-// - explain for, #define, arrays and the / N
-//
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-
-    #define N 20
+You can quickly draw a large number of objects by doing this within a loop:
 
     struct AlloApp : App {
       Light light;
       Mesh m;
-
-      gam::Sine<> sine[N]; // array [] .. the way to make many of something
-
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.generateNormals();
-
-        for (int i = 0; i < N; ++i)
-          sine[i].freq(220.0 + i * i); // 220, 221, 224, ... 581
-
-        initWindow();
-        initAudio();
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        g.draw(m);
-        g.pushMatrix();
-        g.translate(2, 1, 0);
-        g.draw(m);
-        g.popMatrix();
-      }
-
-
-
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-
-        while (io()) {
-          float s = 0;
-          for (int i = 0; i < N; ++i)
-            s += sine[i]();
-          io.out(0) = io.out(1) = s / N;
-        }
-      }
-
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-###Draw 20 spheres
-(an array of 3D positions, initialized with for loop, push/pop OpenGL matrices)
-
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    #define N 20
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-      gam::Sine<> sine[N];
-
       Vec3f position[N];
 
       AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.generateNormals();
-
+        ...
         for (int i = 0; i < N; ++i) {
-          sine[i].freq(220.0 + i * i);
           position[i] = Vec3f(sin(i), i, -i * i);
         }
-
-        initWindow();
-        initAudio();
+        ...
       }
 
       virtual void onDraw(Graphics& g, const Viewpoint& v) {
@@ -569,84 +302,6 @@ trigger one impulse per key press (via bool flag because threads)
           g.popMatrix();
         }
       }
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-        while (io()) {
-          float s = 0;
-          for (int i = 0; i < N; ++i)
-            s += sine[i]();
-          io.out(0) = io.out(1) = s / N;
-        }
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-###Scaling the one sphere mesh affects all 20 times its drawn
-
-// - explain why scale() effects all spheres
-//
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    #define N 20
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-      gam::Sine<> sine[N];
-      Vec3f position[N];
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.scale(0.2);
-        m.generateNormals();
-        for (int i = 0; i < N; ++i) {
-          sine[i].freq(220.0 + i * i);
-          position[i] = Vec3f(sin(i), i, -i * i / 7);
-        }
-        initWindow();
-        initAudio();
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        for (int i = 0; i < N; ++i) {
-          g.pushMatrix();
-          g.translate(position[i]);
-          g.draw(m);
-          g.popMatrix();
-        }
-      }
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-        while (io()) {
-          float s = 0;
-          for (int i = 0; i < N; ++i)
-            s += sine[i]();
-          io.out(0) = io.out(1) = s / N;
-        }
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
 
 ###Animate sphere positions with random walk
 
@@ -712,226 +367,10 @@ trigger one impulse per key press (via bool flag because threads)
       return 0;
     }
 
-###Make each sine’s frequency depend on corresponding sphere’s position
-
-Shoudn't there be thread protection?
-
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    #define N 20
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-      gam::Sine<> sine[N];
-      Vec3f position[N];
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.scale(0.2);
-        m.generateNormals();
-        for (int i = 0; i < N; ++i) {
-          sine[i].freq(220.0 + i * i);
-          position[i] = Vec3f(sin(i), i, -i * i / 7);
-        }
-        initWindow();
-        initAudio();
-      }
-      virtual void onAnimate(double dt) {
-        for (int i = 0; i < N; ++i) {
-          position[i] += Vec3f(rnd::uniformS(), rnd::uniformS(), rnd::uniformS()) * 0.01;
-          sine[i].freq(220.0 + position[i].mag() * 5);
-        }
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        for (int i = 0; i < N; ++i) {
-          g.pushMatrix();
-          g.translate(position[i]);
-          g.draw(m);
-          g.popMatrix();
-        }
-      }
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-        while (io()) {
-          float s = 0;
-          for (int i = 0; i < N; ++i)
-            s += sine[i]();
-          io.out(0) = io.out(1) = s / N;
-        }
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-###Map sine amplitude to the inverse of view distance
-
-Again threading issues?
-
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    #define N 20
-    struct AlloApp : App {
-      Light light;
-      Mesh m;
-      gam::Sine<> sine[N];
-      Vec3f position[N];
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.scale(0.2);
-        m.generateNormals();
-        for (int i = 0; i < N; ++i) {
-          sine[i].freq(220.0 + i * i);
-          position[i] = Vec3f(sin(i), i, -i * i / 7);
-        }
-        initWindow();
-        initAudio();
-      }
-      virtual void onAnimate(double dt) {
-        for (int i = 0; i < N; ++i) {
-          position[i] += Vec3f(rnd::uniformS(), rnd::uniformS(), rnd::uniformS()) * 0.01;
-          sine[i].freq(220.0 + position[i].mag() * 5);
-        }
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        light();
-        for (int i = 0; i < N; ++i) {
-          g.pushMatrix();
-          g.translate(position[i]);
-          g.draw(m);
-          g.popMatrix();
-        }
-      }
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-        while (io()) {
-          float s = 0;
-          for (int i = 0; i < N; ++i)
-            s += sine[i]() / (nav().pos() - position[i]).mag();
-          io.out(0) = io.out(1) = s / N;
-        }
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-###Clip range of possible amplitudes so no sine is too loud nor too quiet.   Add color to spheres.
-
-// - explain why Material is necessary
-// - explain HSV
-//
-    #include "allocore/io/al_App.hpp"
-    #include "Gamma/Oscillator.h"
-    using namespace al;
-    #define N 20
-    struct AlloApp : App {
-      Material material;
-      Light light;
-      Mesh m;
-      gam::Sine<> sine[N];
-      Vec3f position[N];
-      AlloApp() {
-        std::cout << "Created AlloApp" << std::endl;
-        nav().pos(0, 0, 10);
-        light.pos(0, 0, 10);
-        addSphere(m);
-        m.primitive(Graphics::TRIANGLES);
-        m.scale(0.2);
-        m.generateNormals();
-        for (int i = 0; i < N; ++i) {
-          sine[i].freq(220.0 + i * i);
-          position[i] = Vec3f(sin(i), i, -i * i / 7);
-        }
-        initWindow();
-        initAudio();
-      }
-      virtual void onAnimate(double dt) {
-        for (int i = 0; i < N; ++i) {
-          position[i] += Vec3f(rnd::uniformS(), rnd::uniformS(), rnd::uniformS()) * 0.01;
-          sine[i].freq(220.0 + position[i].mag() * 5);
-        }
-      }
-      virtual void onDraw(Graphics& g, const Viewpoint& v) {
-        material();
-        light();
-        for (int i = 0; i < N; ++i) {
-          g.pushMatrix();
-          g.color(HSV((float)i / N, 1, 1));
-          g.translate(position[i]);
-          g.draw(m);
-          g.popMatrix();
-        }
-      }
-
-      virtual void onSound(AudioIOData& io) {
-        gam::Sync::master().spu(audioIO().fps());
-        while (io()) {
-          float s = 0;
-          for (int i = 0; i < N; ++i)
-            s += sine[i]() / (nav().pos() - position[i]).mag();
-          io.out(0) = io.out(1) = s / N;
-        }
-      }
-      virtual void onKeyDown(const ViewpointWindow&, const Keyboard& k) {
-        if (k.key() == ' ') {
-          std::cout << "Spacebar pressed" << std::endl;
-        }
-      }
-    };
-    int main(int argc, char* argv[]) {
-      AlloApp app;
-      app.start();
-      return 0;
-    }
-
-###Refactoring:  making an Agent data structure (sine ugen plus sphere’s 3D position)
-
-
-21. Refactoring: Putting behavior (methods) into the agent class
-22. Give each agent a “song” (algorithmically generated melodic pitch sequence)
-23. Add amplitude envelopes
-24. Synchronize graphics and audio: move agent’s sphere (randomly) only when pitch changes
-25. Synchronize graphics and audio: animate Y-position of agent’s sphere to match its current pitch
-26. Add glissandi (frequency envelopes) to certain notes of each melody
-27. Make visual motion of balls follow glissandi
-
-
-% thank you very much whoever turns this into a real table!
-
-##Getting the Steps
-
-mat201b2013 repo wOOt!
-
-
 
 ##AlloSystem Examples
 
-AlloSystem includes examples organized by the same core/util + module directory structure as the header files.   So the graphics-related AlloCore examples are in
+AlloSystem includes examples organized by the same core/util + module directory structure as the header files. So the graphics-related AlloCore examples are in:
 
     allocore/examples/graphics
 
@@ -943,4 +382,3 @@ while the examples of how to link and coordinate MySQL with AlloSystem as a whol
 
     examples/mysql
 
-Examples could use a lot more commenting, etc., to be more helpful as a "Tutorial".
