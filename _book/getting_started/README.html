@@ -16,8 +16,10 @@
         
     
     
+    <meta name="author" content="AlloSphere-Research-Group">
     
-    <link rel="next" href="../writing_applications_using_allosystem/README" />
+    
+    <link rel="next" href="../writing_applications_using_allosystem/README.html" />
     
     
     <link rel="prev" href="../index.html" />
@@ -32,12 +34,12 @@
 
 
         
-    <div class="book"  data-level="1" data-basepath=".." data-revision="1403202984963">
+    <div class="book" data-github="AlloSphere-Research-Group/Allosystem-Guide" data-level="1" data-basepath=".." data-revision="1404959976389">
     <div class="book-header">
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
     
-    <a href="https://github.com/null" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
+    <a href="https://github.com/AlloSphere-Research-Group/Allosystem-Guide" target="_blank" class="btn pull-left home-bookmark" aria-label="GitHub home"><i class="fa fa-bookmark-o"></i></a>
     
     <a href="#" class="btn pull-left toggle-search" aria-label="Toggle search"><i class="fa fa-search"></i></a>
     <span id="font-settings-wrapper">
@@ -80,6 +82,9 @@
     
 
     
+    <a href="https://github.com/AlloSphere-Research-Group/Allosystem-Guide/stargazers" target="_blank" class="btn pull-right count-star hidden-xs"><i class="fa fa-star-o"></i> Star (<span>-</span>)</a>
+    <a href="https://github.com/AlloSphere-Research-Group/Allosystem-Guide/watchers" target="_blank" class="btn pull-right count-watch hidden-xs"><i class="fa fa-eye"></i> Watch (<span>-</span>)</a>
+    
 
     <!-- Title -->
     <h1>
@@ -97,11 +102,28 @@
     <ul class="summary">
         
         
-
+        
+        <li>
+            <a href="https://github.com/AlloSphere-Research-Group" target="blank" class="author-link">About the author</a>
+        </li>
         
 
         
+        
+        <li>
+            <a href="https://github.com/AlloSphere-Research-Group/Allosystem-Guide/issues" target="blank"class="issues-link">Questions and Issues</a>
+        </li>
+        
 
+        
+        
+        <li>
+            <a href="https://github.com/AlloSphere-Research-Group/Allosystem-Guide/edit/master/getting_started/README.md" target="blank" class="contribute-link">Edit and Contribute</a>
+        </li>
+        
+
+        
+        <li class="divider"></li>
         
 
         <li data-level="0" data-path="index.html">
@@ -118,10 +140,19 @@
             
         </li>
     
-        <li class="chapter " data-level="2" data-path="writing_applications_using_allosystem/README">
+        <li class="chapter " data-level="2" data-path="writing_applications_using_allosystem/README.html">
             
-            <a href="../writing_applications_using_allosystem/README">
-                <i class="fa fa-check"></i> <b>2.</b> Writing applications using AlloSystem
+            <a href="../writing_applications_using_allosystem/README.html">
+                <i class="fa fa-check"></i> <b>2.</b> AlloSystem Tutorial
+            </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="tips_and_tricks/README.html">
+            
+            <a href="../tips_and_tricks/README.html">
+                <i class="fa fa-check"></i> <b>3.</b> Tips and Tricks
             </a>
             
             
@@ -143,22 +174,24 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="book-progress">
     <div class="bar">
-        <div class="inner" style="width: 50%;min-width: 0%;"></div>
+        <div class="inner" style="width: 33.333333333333336%;min-width: 0%;"></div>
     </div>
     <div class="chapters">
     
         <a href="../index.html" title="Introduction" class="chapter done new-chapter" data-progress="0" style="left: 0%;"></a>
     
-        <a href="../getting_started/README.html" title="Getting Started" class="chapter done new-chapter" data-progress="1" style="left: 50%;"></a>
+        <a href="../getting_started/README.html" title="Getting Started" class="chapter done new-chapter" data-progress="1" style="left: 33.333333333333336%;"></a>
     
-        <a href="../writing_applications_using_allosystem/README" title="Writing applications using AlloSystem" class="chapter  new-chapter" data-progress="2" style="left: 100%;"></a>
+        <a href="../writing_applications_using_allosystem/README.html" title="AlloSystem Tutorial" class="chapter  new-chapter" data-progress="2" style="left: 66.66666666666667%;"></a>
+    
+        <a href="../tips_and_tricks/README.html" title="Tips and Tricks" class="chapter  new-chapter" data-progress="3" style="left: 100%;"></a>
     
     </div>
 </div>
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_4">
+                    <section class="normal" id="section-gitbook_646">
                     
                         <h1 id="getting-started">Getting Started</h1>
 <h2 id="supported-systems">Supported Systems</h2>
@@ -173,13 +206,14 @@
 <pre><code>git clone https://github.com/AlloSphere-Research-Group/AlloSystem.git
 </code></pre><p>For more information and to download git, visit the <a href="http://git-scm.com/" target="_blank">Git homepage</a>.</p>
 <h2 id="installation">Installation</h2>
-<p>You don’t need to install AlloSystem, as it can be used without installing, with the application building facilities provided by the AlloSystem build system (see section <em>Application building facilities</em> below). If you choose to install the AlloSystem libraries, then they will be available as any other system libraries and you will need to use AlloProject or build your own IDE projects (see sections on <em>AlloProject</em> and <em>IDEs</em> below). You will also need to get some of the dependencies described below in the <em>Dependencies</em> section.</p>
+<p>You might not need to install AlloSystem, as it can be used directly from the sources without installing. The AlloSystem build system provides application building facilities (see section <em>Application building facilities</em> below). If you choose to install the AlloSystem libraries, then they will be available as any other system libraries and you will need to use AlloProject or build your own IDE projects (see sections on <em>AlloProject</em> and <em>IDEs</em> below). To decide whether you want to install or use the application building facilities in AlloSystem, read the rest of the chapter.</p>
+<p>You will also need to get some of the dependencies described below in the <em>Dependencies</em> section.</p>
 <h3 id="os-x">OS X</h3>
 <ol>
 <li>Homebrew: You can get AlloSystem and its dependencies using the <a href="http://brew.sh" target="_blank">homebrew package manager</a>. There is no need to download the sources from git if you use this
 method. To install using homebrew run on the terminal:</li>
 </ol>
-<pre><code>$ brew tap AlloSphere - Research - Group / AlloSystem
+<pre><code>$ brew tap AlloSphere-Research-Group/AlloSystem
 $ brew install AlloSystem
 </code></pre><ol>
 <li>Command line: You can install the libraries by running in the AlloSystem
@@ -202,12 +236,13 @@ described below.</p>
 <ul>
 <li>Allocore:<ul>
 <li><em>Mandatory dependencies</em>:<ul>
-<li>OpenGL</li>
-<li>GLUT</li>
-<li>GLEW</li>
+<li>Pthreads, LibUSB and Udev on Linux system (no mandatory dependencies need to be installed on other systems)</li>
 </ul>
 </li>
 <li><em>Optional dependencies</em>:<ul>
+<li>OpenGL</li>
+<li>GLUT</li>
+<li>GLEW</li>
 <li>Freetype</li>
 <li>Assimp</li>
 <li>Freeimage</li>
@@ -229,7 +264,7 @@ described below.</p>
 </ul>
 </li>
 </ul>
-<p>The smallest and simplest AlloSystem can consist of Allocore without any optional dependencies. This system will allow you to create interactive applications, but will lack a lot of functionality like font rendering, audio, stereographic rendering and GL control widgets.</p>
+<p>The smallest and simplest AlloSystem can consist of the Allocore library only without any optional dependencies. This system could allow you to create interactive applications, but will lack a some functionality like font rendering, audio, stereographic rendering or GL control widgets.</p>
 <p>If you build Allocore without having all the dependencies, be aware that the library will build without issues, but if you try to build code that uses the functions that are not available, you will encounter &quot;undefined symbol&quot; errors when linking to Allocore.</p>
 <p>A script called <em>install dependencies.sh</em> is provided within each module
 to get its dependencies. The scripts should run on Linux, OS X and Windows,
@@ -241,7 +276,7 @@ command line without the need to install the libraries system wide. This method 
 <ul>
 <li>You are prototyping many small applications</li>
 <li>You are developing AlloSystem</li>
-<li>You want to work on the command line</li>
+<li>You want to work on the command line, or</li>
 <li>You need to update AlloSystem from git often</li>
 </ul>
 <p>To create and run an application, place your source file anywhere within
@@ -257,8 +292,7 @@ sources containing them.</p>
 <p>If you need to run your application in the debugger, you can run it like:</p>
 <pre><code>./debug.sh path/to/file.cpp
 </code></pre><p>This will build debug version of the AlloSystem libraries and of the application, and will run it in the debugger. If the application crashes or is interrupted, the debugger shell will open allowing for inspecting memory and
-setting breakpoints. If you need to use a different debugger to the default gdb, edit the debug.sh
-script’s variable DEBUGGER.</p>
+setting breakpoints. If you need to use a different debugger to the default gdb, edit the <em>debug.sh</em> script&#39;s variable <em>DEBUGGER</em>.</p>
 <h2 id="alloproject">AlloProject</h2>
 <p>The AlloProject repository contains a set of scripts that simplifies getting AlloSystem, GLV and Gamma and building applications that use them. You should use AlloProject if:</p>
 <ul>
@@ -267,7 +301,7 @@ and GLV</li>
 <li>You want to use installed versions of AlloSystem, Gamma and GLV in a
 command line setting</li>
 <li>You want to generate Xcode projects for an existing set of sources</li>
-<li>You need to use a different version of AlloSystem than the one installed.</li>
+<li>You need to use a different version of AlloSystem than the one installed, or</li>
 <li>You want to create projects that include and build Gamma and GLV in addition to AlloSystem</li>
 </ul>
 <p>To create an AlloProject, clone the AlloProject git repository (optionally
@@ -286,8 +320,7 @@ run:</p>
 </code></pre><p>The AlloProject scripts will take care of all the linking and building of
 AlloSystem, Gamma and GLV. If you need additional compiler flags, use the
 <em>flags.txt</em> file as in AlloSystem.</p>
-<p>AlloProject can generate an Xcode project for a file or files within a direc-
-tory by running:</p>
+<p>AlloProject can generate an Xcode project for a file or files within a directory by running:</p>
 <pre><code>./makexcode.sh src/simpleApp.cpp
 </code></pre><h2 id="creating-your-own-ide-projects">Creating your own IDE projects</h2>
 <p>Although AlloProject (see section on <em>AlloProject</em> above) can assist in creating IDE projects, you might want to create your own IDE projects that use AlloSystem. In this case the only requirement is that the AlloSystem library and headers are
@@ -306,7 +339,7 @@ installed where your system will find them, and that you add linking options to 
         <a href="../index.html" class="navigation navigation-prev " aria-label="Previous page: Introduction"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../writing_applications_using_allosystem/README" class="navigation navigation-next " aria-label="Next page: Writing applications using AlloSystem"><i class="fa fa-angle-right"></i></a>
+        <a href="../writing_applications_using_allosystem/README.html" class="navigation navigation-next " aria-label="Next page: AlloSystem Tutorial"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
