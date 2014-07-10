@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-github="AlloSphere-Research-Group/Allosystem-Guide" data-level="1" data-basepath=".." data-revision="1404959976389">
+    <div class="book" data-github="AlloSphere-Research-Group/Allosystem-Guide" data-level="1" data-basepath=".." data-revision="1405017463505">
     <div class="book-header">
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Toggle summary"><i class="fa fa-align-justify"></i></a>
@@ -191,7 +191,7 @@
 
                 <div class="page-inner">
                 
-                    <section class="normal" id="section-gitbook_646">
+                    <section class="normal" id="section-gitbook_766">
                     
                         <h1 id="getting-started">Getting Started</h1>
 <h2 id="supported-systems">Supported Systems</h2>
@@ -265,7 +265,9 @@ described below.</p>
 </li>
 </ul>
 <p>The smallest and simplest AlloSystem can consist of the Allocore library only without any optional dependencies. This system could allow you to create interactive applications, but will lack a some functionality like font rendering, audio, stereographic rendering or GL control widgets.</p>
-<p>If you build Allocore without having all the dependencies, be aware that the library will build without issues, but if you try to build code that uses the functions that are not available, you will encounter &quot;undefined symbol&quot; errors when linking to Allocore.</p>
+<p>If you build Allocore without having all the dependencies, be aware that the library will build without issues, but if you try to build code that uses the functions that are not available, because the headers have not been copied, building will fail with a message like:</p>
+<pre><code>fatal error: allocore/graphics/al_Image.hpp: No such file or directory
+</code></pre><p>In this particular case, because freeimage was not available, image and texture functionality is not available.</p>
 <p>A script called <em>install dependencies.sh</em> is provided within each module
 to get its dependencies. The scripts should run on Linux, OS X and Windows,
 although they might not work under certain circumstances.</p>
