@@ -57,7 +57,7 @@ To build AlloSystem you will first need the cmake build system. You can download
 Different parts of AlloSystem have different dependencies:
 * Allocore:
  * *Mandatory dependencies*:
-   * Pthreads, LibUSB and Udev on Linux system (no mandatory dependencies on other systems)
+   * Pthreads, LibUSB and Udev on Linux system (no mandatory dependencies need to be installed on other systems)
  * *Optional dependencies*:
    * OpenGL
    * GLUT
@@ -75,9 +75,13 @@ Different parts of AlloSystem have different dependencies:
  * Allocore
  * GLV
 
-The smallest and simplest AlloSystem can consist of the Allocore library only without any optional dependencies. This system could allow you to create interactive applications, but will lack a some of functionality like font rendering, audio, stereographic rendering or GL control widgets.
+The smallest and simplest AlloSystem can consist of the Allocore library only without any optional dependencies. This system could allow you to create interactive applications, but will lack a some functionality like font rendering, audio, stereographic rendering or GL control widgets.
 
-If you build Allocore without having all the dependencies, be aware that the library will build without issues, but if you try to build code that uses the functions that are not available, you will encounter "undefined symbol" errors when linking to Allocore.
+If you build Allocore without having all the dependencies, be aware that the library will build without issues, but if you try to build code that uses the functions that are not available, because the headers have not been copied, building will fail with a message like:
+
+    fatal error: allocore/graphics/al_Image.hpp: No such file or directory
+
+In this particular case, because freeimage was not available, image and texture functionality is not available.
 
 A script called *install dependencies.sh* is provided within each module
 to get its dependencies. The scripts should run on Linux, OS X and Windows,
@@ -91,7 +95,7 @@ The AlloSystem build system allows building applications directly from the
 command line without the need to install the libraries system wide. This method is only supported on the command line. You should use the application building facilities if:
 * You are prototyping many small applications
 * You are developing AlloSystem
-* You want to work on the command line
+* You want to work on the command line, or
 * You need to update AlloSystem from git often
 
 To create and run an application, place your source file anywhere within
@@ -123,7 +127,7 @@ and GLV
 * You want to use installed versions of AlloSystem, Gamma and GLV in a
 command line setting
 * You want to generate Xcode projects for an existing set of sources
-* You need to use a different version of AlloSystem than the one installed.
+* You need to use a different version of AlloSystem than the one installed, or
 * You want to create projects that include and build Gamma and GLV in addition to AlloSystem
 
 
@@ -152,8 +156,7 @@ The AlloProject scripts will take care of all the linking and building of
 AlloSystem, Gamma and GLV. If you need additional compiler flags, use the
 *flags.txt* file as in AlloSystem.
 
-AlloProject can generate an Xcode project for a file or files within a direc-
-tory by running:
+AlloProject can generate an Xcode project for a file or files within a directory by running:
 
     ./makexcode.sh src/simpleApp.cpp
 

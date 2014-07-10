@@ -6,7 +6,7 @@ This tutorial will focus on using the AlloSystem command line building facilitie
 
 Matt Wright's and Karl Yerkes' "Steps" are a series of C++ programs starting from "Hello, World!" and incrementally growing to an interactive (well, at least navigable) world of colored spheres each moving up and down to show the current pitch of the algorithmically generated sinewave "song" it is looping.  The diff from each to the next is always reasonably small and comprehendable, as we recommend in general as a best practice for incremental development and check-in of AlloSystem programs.
 
-### Hello, World! in main() with std::cout
+### Hello, World!
 
 An AlloSystem program must start as any other C++ program with a main function:
 
