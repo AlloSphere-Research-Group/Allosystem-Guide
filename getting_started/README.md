@@ -18,7 +18,7 @@ For more information and to download git, visit the [Git homepage](http://git-sc
 ##Installation
 You might not need to install AlloSystem, as it can be used directly from the sources without installing. The AlloSystem build system provides application building facilities (see section *Application building facilities* below). If you choose to install the AlloSystem libraries, then they will be available as any other system libraries and you will need to use AlloProject or build your own IDE projects (see sections on *AlloProject* and *IDEs* below). To decide whether you want to install or use the application building facilities in AlloSystem, read the rest of the chapter.
 
-You will also need to get some of the dependencies described below in the *Dependencies* section.
+The term *installation* in this section means the installation of the AlloSystem libraries, but to complete this installation you might also need to get some of the dependencies described below in the *Dependencies* section.
 
 ###OS X
 1. Homebrew: You can get AlloSystem and its dependencies using the [homebrew package manager](http://brew.sh). There is no need to download the sources from git if you use this
