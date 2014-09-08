@@ -16,5 +16,6 @@ A simple way to stream values to and from the audio callback is to use a lock-fr
     #include "allocore/system/al_SingleRWRingBuffer.hpp
 
 
+#Ideas for tips
 
-##Broadcast App
+* Cuttlebone (state sharing)
