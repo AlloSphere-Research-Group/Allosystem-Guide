@@ -83,7 +83,7 @@ If you build Allocore without having all the dependencies, be aware that the lib
 
 In this particular case, because freeimage was not available, image and texture functionality is not available.
 
-A script called *install dependencies.sh* is provided within each module
+A script called *install_all_dependencies.sh* is provided within each module
 to get its dependencies. The scripts should run on Linux, OS X and Windows,
 although they might not work under certain circumstances.
 
