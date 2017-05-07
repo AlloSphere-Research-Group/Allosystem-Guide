@@ -1,6 +1,6 @@
 # Getting Started
 
-##Supported Systems
+## Supported Systems
 
 AlloSystem can be run and built using the following platforms:
 
@@ -8,19 +8,19 @@ AlloSystem can be run and built using the following platforms:
 * OS X (GCC and LLVM)
 * Windows (Mingw and MSVC)
 
-##Download
+## Download
 AlloSystem is currently distributed in source form only, so you have to build it yourself. You can download the AlloSystem sources using git with the command:
 
     git clone https://github.com/AlloSphere-Research-Group/AlloSystem.git
 For more information and to download git, visit the [Git homepage](http://git-scm.com/).
 
 
-##Installation
+## Installation
 You might not need to install AlloSystem, as it can be used directly from the sources without installing. The AlloSystem build system provides application building facilities (see section *Application building facilities* below). If you choose to install the AlloSystem libraries, then they will be available as any other system libraries and you will need to use AlloProject or build your own IDE projects (see sections on *AlloProject* and *IDEs* below). To decide whether you want to install or use the application building facilities in AlloSystem, read the rest of the chapter.
 
 The term *installation* in this section means the installation of the AlloSystem libraries, but to complete this installation you might also need to get some of the dependencies described below in the *Dependencies* section.
 
-###OS X
+### OS X
 1. Homebrew: You can get AlloSystem and its dependencies using the [homebrew package manager](http://brew.sh). There is no need to download the sources from git if you use this
 method. To install using homebrew run on the terminal:
 
@@ -34,21 +34,21 @@ sources root directory:
 
     $ sudo make install
 
-###Linux
+### Linux
 You can install the libraries by running in the AlloSystem sources root directory:
 
     $ sudo make install
 
-###Windows Mingw
+### Windows Mingw
 You can install the libraries by running in the AlloSystem sources root directory:
 
     $ sudo make install
 
-###Windows MSVC
+### Windows MSVC
 Not supported, you must manually copy libraries or use the other methods
 described below.
 
-##Dependencies
+## Dependencies
 
 AlloSystem is a complex package that depends on other libraries for functionality.
 
@@ -90,7 +90,7 @@ although they might not work under certain circumstances.
 Apart from the library dependencies, some of the examples within these packages have other additional dependencies like Gamma, libsndfile and mysql. If you don't have these, some of the examples may not run.
 
 
-##Application building facilites
+## Application building facilites
 The AlloSystem build system allows building applications directly from the
 command line without the need to install the libraries system wide. This method is only supported on the command line. You should use the application building facilities if:
 * You are prototyping many small applications
@@ -112,7 +112,7 @@ If you need to add compiler flags in your application (e.g. for dependencies
 linking), you can create a file called textttflags.txt in the same folder as your
 sources containing them.
 
-###Debugging on the commandline
+### Debugging on the commandline
 If you need to run your application in the debugger, you can run it like:
 
     ./debug.sh path/to/file.cpp
@@ -120,7 +120,7 @@ If you need to run your application in the debugger, you can run it like:
 This will build debug version of the AlloSystem libraries and of the application, and will run it in the debugger. If the application crashes or is interrupted, the debugger shell will open allowing for inspecting memory and
 setting breakpoints. If you need to use a different debugger to the default gdb, edit the *debug.sh* script's variable *DEBUGGER*.
 
-##AlloProject
+## AlloProject
 The AlloProject repository contains a set of scripts that simplifies getting AlloSystem, GLV and Gamma and building applications that use them. You should use AlloProject if:
 * You need to tie your code to particular versions of AlloSystem, Gamma
 and GLV
@@ -160,11 +160,11 @@ AlloProject can generate an Xcode project for a file or files within a directory
 
     ./makexcode.sh src/simpleApp.cpp
 
-##Creating your own IDE projects
+## Creating your own IDE projects
 Although AlloProject (see section on *AlloProject* above) can assist in creating IDE projects, you might want to create your own IDE projects that use AlloSystem. In this case the only requirement is that the AlloSystem library and headers are
 installed where your system will find them, and that you add linking options to the desired AlloSystem modules (e.g. liballocore, liballloutil, liballoGLV).
 
-##Reporting Issues
+## Reporting Issues
 
 We are interested in hearing what didn't work for you so we can fix it. Please file bug reports (and feature requests) in the [AlloSystem github tracker](https://github.com/AlloSphere-Research-Group/AlloSystem/issues).
 
